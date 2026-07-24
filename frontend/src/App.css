@@ -1,0 +1,108 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #f4f7fc;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  max-width: 1300px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  color: #2563eb;
+  font-size: 50px;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.filters input,
+.filters select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.filters input {
+  width: 260px;
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #2563eb;
+  color: white;
+}
+
+th {
+  padding: 15px;
+  text-align: center;
+}
+
+td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+tbody tr:hover {
+  background: #dbeafe;
+  transition: 0.3s;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+button:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+button:disabled {
+  background: gray;
+  cursor: not-allowed;
+}
+
+.page {
+  font-size: 20px;
+  font-weight: bold;
+}
