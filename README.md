@@ -164,8 +164,32 @@ npm run dev
 ---
 
 ## 📸 Screenshots
+1. Dashboard Home 
+Total Listings
+Total Cities
+Total Categories
+![p](https://github.com/agenticanalyst/business-listing-dashboard/blob/main/frontend/Screenshot%202026-07-25%20230440.png)
 
-Add screenshots here.
+2. City-wise Chart
+
+Jisme:
+
+Jabalpur → 49
+Bhopal → 30
+![p](https://github.com/agenticanalyst/business-listing-dashboard/blob/main/frontend/Screenshot%202026-07-25%20230518.png)
+
+3. Category-wise Chart
+![p](https://github.com/agenticanalyst/business-listing-dashboard/blob/main/frontend/Screenshot%202026-07-25%20230621.png)
+
+4. Source-wise Chart
+![p](https://github.com/agenticanalyst/business-listing-dashboard/blob/main/frontend/Screenshot%202026-07-25%20230637.png)
+
+5. FastAPI Swagger Docs 
+![p](https://github.com/agenticanalyst/business-listing-dashboard/blob/main/frontend/Screenshot%202026-07-25%20230323.png)
+
+6. MySQL Database
+![p]()
+
 
 ---
 
