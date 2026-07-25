@@ -1,43 +1,43 @@
 import pandas as pd
 from sqlalchemy import create_engine
 
-DATABASE_URL = "mysql+pymysql://root:Saaru007%40@localhost:3306/buisness_dasboard"
+engine = create_engine(
+    "mysql+pymysql://root:Saaru007%40@localhost:3306/buisness_dasboard"
+)
 
-engine = create_engine(DATABASE_URL)
+df = pd.read_csv("business_listings.csv")
+df.columns = df.columns.str.strip()
 
-df = pd.read_csv("restaurants.csv")
-# Assignment ke table ke columns ke hisaab se data set karte hain
-df["category"] = "Restaurant"
-df["city"] = "Jabalpur"
-df["source"] = "Justdial"
+df = df.rename(columns={
+    "Business Name": "business_name",
+    "Category": "category",
+    "City": "city",
+    "Address": "address",
+    "Phone": "phone",
+    "Source": "source"
+})
 
-# Columns ka order table jaisa rakho
-df = df[
-    [
-        "Business Name",
-        "category",
-        "city",
-        "Address",
-        "Phone",
-        "source",
-    ]
-]
-
-# Table ke column names se match karao
-df.columns = [
+# Sirf required columns
+df = df[[
     "business_name",
     "category",
     "city",
     "address",
     "phone",
-    "source",
-]
+    "source"
+]]
+
+# Missing values ko handle karo
+df = df.fillna("")
+
+print(df.head())
 
 df.to_sql(
     "listing_master",
-    con=engine,
+    engine,
     if_exists="append",
     index=False,
+    method="multi"
 )
 
-print("Data Inserted Successfully ✅")
+print("✅ Data Inserted Successfully")

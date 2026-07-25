@@ -7,8 +7,8 @@ import pandas as pd
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
-driver.get("https://www.justdial.com/Jabalpur/Restaurants/nct-10408936?trkid=277-remotecity-fcat-cate&term=&cbflg=")
-
+# driver.get("https://www.justdial.com/Jabalpur/Restaurants/nct-10408936?trkid=277-remotecity-fcat-cate&term=&cbflg=")
+driver.get("https://www.justdial.com/Bhopal/Restaurants")
 time.sleep(10)
 from selenium.webdriver.common.by import By
 
@@ -31,12 +31,6 @@ print("Total Phones:", len(phones))
 data = []
 
 for i in range(min(len(restaurants), len(addresses), len(phones))):
-    data.append({
-    "Business Name": restaurants[i].text,
-    "Address": addresses[i].text,
-    "Phone": phones[i].text
-})
-
     print("----------------------------")
     print("Restaurant :", restaurants[i].text)
     print("Address    :", addresses[i].text)

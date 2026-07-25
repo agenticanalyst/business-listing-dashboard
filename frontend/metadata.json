@@ -1,0 +1,6 @@
+{
+  "name": "Business Listing Dashboard",
+  "description": "Premium SaaS dashboard for exploring, searching, and managing business listings with statistics, sticky filters, and interactive pagination.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

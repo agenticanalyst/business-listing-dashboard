@@ -1,7 +1,46 @@
 import { useEffect, useState } from "react";
+import {
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
+
+import {
+  FaBuilding,
+  FaSearch,
+  FaMapMarkerAlt,
+  FaLayerGroup,
+  FaDatabase,
+  FaChevronLeft,
+  FaChevronRight,
+  FaPhone,
+} from "react-icons/fa";
+
+import "./App.css";
+
+const COLORS = [
+  "#4F46E5",
+  "#22C55E",
+  "#F59E0B",
+  "#EF4444",
+  "#06B6D4",
+  "#8B5CF6",
+  "#14B8A6",
+];
 
 function App() {
   const [listings, setListings] = useState([]);
+  const [cityData, setCityData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
+  const [sourceData, setSourceData] = useState([]);
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [city, setCity] = useState("");
@@ -11,13 +50,26 @@ function App() {
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/listings")
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then((data) => setListings(data));
+
+    fetch("http://127.0.0.1:8000/city-count")
+      .then((res) => res.json())
+      .then((data) => setCityData(data));
+
+    fetch("http://127.0.0.1:8000/category-count")
+      .then((res) => res.json())
+      .then((data) => setCategoryData(data));
+
+    fetch("http://127.0.0.1:8000/source-count")
+      .then((res) => res.json())
+      .then((data) => setSourceData(data));
+
   }, []);
 
   const filteredListings = listings.filter((item) => {
     const matchesSearch = item.business_name
-      .toLowerCase()
+      ?.toLowerCase()
       .includes(search.toLowerCase());
 
     const matchesCategory =
@@ -37,171 +89,333 @@ function App() {
     indexOfLastItem
   );
 
+  const totalCategories = [
+    ...new Set(listings.map((item) => item.category)),
+  ].filter(Boolean).length;
+
+  const totalCities = [
+    ...new Set(listings.map((item) => item.city)),
+  ].filter(Boolean).length;
+
+  const totalPages =
+    Math.ceil(filteredListings.length / itemsPerPage) || 1;
+
   return (
-    <div
-      style={{
-        maxWidth: "1200px",
-        margin: "30px auto",
-        padding: "20px",
-        fontFamily: "Arial",
-      }}
-    >
-      <h1
-        style={{
-          textAlign: "center",
-          color: "#2563eb",
-          fontSize: "48px",
-          marginBottom: "25px",
-        }}
-      >
-        Business Listing Dashboard
-      </h1>
+    <div className="dashboard">
+          <div className="hero">
+        <div className="hero-top">
+          <span className="hero-pill">SaaS Management Suite</span>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "15px",
-          marginBottom: "20px",
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Search Business..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{
-            padding: "10px",
-            width: "250px",
-            border: "1px solid #ccc",
-            borderRadius: "6px",
-            fontSize: "16px",
-          }}
-        />
+          <span className="hero-status">
+            <span className="status-dot"></span>
+            System Operational
+          </span>
+        </div>
 
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          style={{
-            padding: "10px",
-            borderRadius: "6px",
-            fontSize: "16px",
-          }}
-        >
-          <option value="">All Categories</option>
-          <option value="Restaurant">Restaurant</option>
-        </select>
+        <h1>Business Listing Dashboard</h1>
 
-        <select
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          style={{
-            padding: "10px",
-            borderRadius: "6px",
-            fontSize: "16px",
-          }}
-        >
-          <option value="">All Cities</option>
-          <option value="Jabalpur">Jabalpur</option>
-        </select>
+        <p>
+          Manage and explore business listings with FastAPI + MySQL Engine
+        </p>
       </div>
 
-      <table
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-        }}
-      >
-        <thead
-          style={{
-            backgroundColor: "#2563eb",
-            color: "white",
-          }}
-        >
-          <tr>
-            <th style={{ padding: "12px", border: "1px solid #ddd" }}>ID</th>
-            <th style={{ padding: "12px", border: "1px solid #ddd" }}>
-              Business Name
-            </th>
-            <th style={{ padding: "12px", border: "1px solid #ddd" }}>
-              Category
-            </th>
-            <th style={{ padding: "12px", border: "1px solid #ddd" }}>City</th>
-            <th style={{ padding: "12px", border: "1px solid #ddd" }}>
-              Address
-            </th>
-            <th style={{ padding: "12px", border: "1px solid #ddd" }}>
-              Phone
-            </th>
-          </tr>
-        </thead>
+      <div className="stats">
+        <div className="card">
+          <div className="icon-wrapper icon-blue">
+            <FaBuilding className="icon" />
+          </div>
 
-        <tbody>
-          {currentItems.map((item, index) => (
-            <tr
-              key={item.id}
-              style={{
-                backgroundColor:
-                  index % 2 === 0 ? "#ffffff" : "#f5f5f5",
+          <div className="card-body">
+            <p>Total Listings</p>
+            <h2>{filteredListings.length}</h2>
+          </div>
+        </div>
+
+        <div className="card">
+          <div className="icon-wrapper icon-purple">
+            <FaLayerGroup className="icon" />
+          </div>
+
+          <div className="card-body">
+            <p>Categories</p>
+            <h2>{totalCategories}</h2>
+          </div>
+        </div>
+
+        <div className="card">
+          <div className="icon-wrapper icon-emerald">
+            <FaMapMarkerAlt className="icon" />
+          </div>
+
+          <div className="card-body">
+            <p>Cities</p>
+            <h2>{totalCities}</h2>
+          </div>
+        </div>
+
+        <div className="card">
+          <div className="icon-wrapper icon-amber">
+            <FaDatabase className="icon" />
+          </div>
+
+          <div className="card-body">
+            <p>Backend Engine</p>
+            <h2>FastAPI</h2>
+          </div>
+        </div>
+      </div>
+
+      <div className="filter-card">
+        <div className="filter-header">
+          <span className="filter-title">
+            Search & Filters
+          </span>
+
+          {(search || category || city) && (
+            <button
+              className="btn-clear-filters"
+              onClick={() => {
+                setSearch("");
+                setCategory("");
+                setCity("");
+                setCurrentPage(1);
               }}
             >
-              <td style={{ padding: "10px", border: "1px solid #ddd" }}>
-                {item.id}
-              </td>
-              <td style={{ padding: "10px", border: "1px solid #ddd" }}>
-                {item.business_name}
-              </td>
-              <td style={{ padding: "10px", border: "1px solid #ddd" }}>
-                {item.category}
-              </td>
-              <td style={{ padding: "10px", border: "1px solid #ddd" }}>
-                {item.city}
-              </td>
-              <td style={{ padding: "10px", border: "1px solid #ddd" }}>
-                {item.address}
-              </td>
-              <td style={{ padding: "10px", border: "1px solid #ddd" }}>
-                {item.phone}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              Reset Filters
+            </button>
+          )}
+        </div>
 
-      <div
-        style={{
-          marginTop: "20px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "15px",
-        }}
-      >
-        <button
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
-          style={{
-            padding: "10px 20px",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-        >
-          Previous
-        </button>
+        <div className="filter-controls">
+          <div className="search-box">
+            <FaSearch className="search-icon" />
 
-        <strong>Page {currentPage}</strong>
+            <input
+              type="text"
+              placeholder="Search Business..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1);
+              }}
+            />
+          </div>
 
-        <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={indexOfLastItem >= filteredListings.length}
-          style={{
-            padding: "10px 20px",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-        >
-          Next
-        </button>
+          <select
+            className="select-filter"
+            value={category}
+            onChange={(e) => {
+              setCategory(e.target.value);
+              setCurrentPage(1);
+            }}
+          >
+            <option value="">All Categories</option>
+
+            {[...new Set(listings.map((item) => item.category))]
+              .filter(Boolean)
+              .map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+          </select>
+
+          <select
+            className="select-filter"
+            value={city}
+            onChange={(e) => {
+              setCity(e.target.value);
+              setCurrentPage(1);
+            }}
+          >
+            <option value="">All Cities</option>
+
+            {[...new Set(listings.map((item) => item.city))]
+              .filter(Boolean)
+              .map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+          </select>
+        </div>
+      </div>
+   
+         <div className="table-card">
+        <div className="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Business Name</th>
+                <th>Category</th>
+                <th>City</th>
+                <th>Address</th>
+                <th>Phone</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {currentItems.length > 0 ? (
+                currentItems.map((item) => {
+                  const categorySlug = item.category
+                    ? item.category.toLowerCase().replace(/[^a-z0-9]/g, "")
+                    : "default";
+
+                  return (
+                    <tr key={item.id}>
+                      <td className="id-cell">#{item.id}</td>
+
+                      <td className="business-name-cell">
+                        {item.business_name}
+                      </td>
+
+                      <td>
+                        <span
+                          className={`badge badge-category badge-${categorySlug}`}
+                        >
+                          {item.category}
+                        </span>
+                      </td>
+
+                      <td>
+                        <div className="city-cell">
+                          <FaMapMarkerAlt className="city-icon" />
+                          <span>{item.city}</span>
+                        </div>
+                      </td>
+
+                      <td className="address-cell">
+                        {item.address}
+                      </td>
+
+                      <td className="phone-cell">
+                        <a
+                          href={`tel:${item.phone}`}
+                          className="phone-link"
+                        >
+                          <FaPhone className="phone-icon" />
+                          <span>{item.phone}</span>
+                        </a>
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={6} className="empty-state">
+                    No business listings found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="table-card" style={{ marginTop: 30 }}>
+        <h2>City-wise Business Count</h2>
+
+        <ResponsiveContainer width="100%" height={350}>
+          <BarChart data={cityData}>
+            <XAxis dataKey="city" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="total" fill="#4F46E5" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+            <div className="table-card" style={{ marginTop: 30 }}>
+        <h2>Category-wise Business Count</h2>
+
+        <ResponsiveContainer width="100%" height={350}>
+          <PieChart>
+            <Pie
+              data={categoryData}
+              dataKey="total"
+              nameKey="category"
+              outerRadius={120}
+              label
+            >
+              {categoryData.map((entry, index) => (
+                <Cell
+                  key={index}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+
+      <div className="table-card" style={{ marginTop: 30 }}>
+        <h2>Source-wise Business Count</h2>
+
+        <ResponsiveContainer width="100%" height={350}>
+          <BarChart data={sourceData}>
+            <XAxis dataKey="source" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="total" fill="#22C55E" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      <div className="pagination">
+        <div className="pagination-info">
+          Showing {filteredListings.length > 0 ? indexOfFirstItem + 1 : 0} to{" "}
+          {Math.min(indexOfLastItem, filteredListings.length)} of{" "}
+          {filteredListings.length} listings
+        </div>
+
+        <div className="pagination-controls">
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => Math.max(prev - 1, 1))
+            }
+            disabled={currentPage === 1}
+            className="btn-pagination"
+          >
+            <FaChevronLeft className="btn-icon" />
+            Previous
+          </button>
+
+          <div className="page-numbers">
+            {Array.from(
+              { length: totalPages },
+              (_, i) => i + 1
+            ).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`page-pill ${
+                  currentPage === page ? "active" : ""
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={() =>
+              setCurrentPage((prev) =>
+                Math.min(prev + 1, totalPages)
+              )
+            }
+            disabled={currentPage === totalPages}
+            className="btn-pagination"
+          >
+            Next
+            <FaChevronRight className="btn-icon" />
+          </button>
+        </div>
       </div>
     </div>
   );
