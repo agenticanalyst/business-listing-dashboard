@@ -1,5 +1,9 @@
 # 📊 Business Listing Dashboard
 
+![React](https://img.shields.io/badge/React-18-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Python-green)
+![MySQL](https://img.shields.io/badge/MySQL-8-orange)
+
 A full-stack Business Listing Dashboard built using **React.js, FastAPI, and MySQL**. The application collects business listings through web scraping, stores them in a MySQL database, and visualizes aggregated insights using interactive charts.
 
 ---
