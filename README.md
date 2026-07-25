@@ -35,7 +35,7 @@ A full-stack Business Listing Dashboard built using **React.js, FastAPI, and MyS
 
 ### Database
 - MySQL
-  ![p](https://github.com/agenticanalyst/business-listing-dashboard/blob/main/frontend/ChatGPT%20Image%20Jul%2026%2C%202026%2C%2012_15_49%20AM.png)
+  ![p](https://github.com/agenticanalyst/business-listing-dashboard/blob/main/frontend/database.png)
 
 ---
 
@@ -189,7 +189,7 @@ Bhopal → 30
 ![p](https://github.com/agenticanalyst/business-listing-dashboard/blob/main/frontend/Screenshot%202026-07-25%20230323.png)
 
 6. MySQL Database
-![p]()
+![p](https://github.com/agenticanalyst/business-listing-dashboard/blob/main/frontend/image.90.png)
 
 
 ---
